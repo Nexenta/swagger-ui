@@ -11,8 +11,15 @@ class ResourceView extends Backbone.View
 
     if @model.description
       @model.summary = @model.description
+
     # Render each operation
-    for operation in @model.operationsArray
+    cmp = (a, b) ->
+      a_ = a.path.replace(/\{\w*\}/g, '{}')
+      b_ = b.path.replace(/\{\w*\}/g, '{}')
+      a_.localeCompare(b_)
+
+    ops = @model.operationsArray.sort(cmp)
+    for operation in ops
       counter = 0
 
       id = operation.nickname

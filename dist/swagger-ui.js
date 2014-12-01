@@ -2080,15 +2080,21 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     ResourceView.prototype.render = function() {
-      var counter, id, methods, operation, _i, _len, _ref4;
+      var cmp, counter, id, methods, operation, ops, _i, _len;
       $(this.el).html(Handlebars.templates.resource(this.model));
       methods = {};
       if (this.model.description) {
         this.model.summary = this.model.description;
       }
-      _ref4 = this.model.operationsArray;
-      for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
-        operation = _ref4[_i];
+      cmp = function(a, b) {
+        var a_, b_;
+        a_ = a.path.replace(/\{\w*\}/g, '{}');
+        b_ = b.path.replace(/\{\w*\}/g, '{}');
+        return a_.localeCompare(b_);
+      };
+      ops = this.model.operationsArray.sort(cmp);
+      for (_i = 0, _len = ops.length; _i < _len; _i++) {
+        operation = ops[_i];
         counter = 0;
         id = operation.nickname;
         while (typeof methods[id] !== 'undefined') {
