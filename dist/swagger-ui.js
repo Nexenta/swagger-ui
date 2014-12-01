@@ -823,6 +823,136 @@ function program7(depth0,data) {
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
+    + "'>";
+  if (stack1 = helpers.sampleJSON) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.sampleJSON; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n				<br />\n				<div class=\"parameter-content-type\" />\n			";
+  return buffer;
+  }
+
+function program9(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.isFile, {hash:{},inverse:self.program(10, program10, data),fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+function program10(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n			";
+  stack1 = helpers['if'].call(depth0, depth0['default'], {hash:{},inverse:self.program(13, program13, data),fn:self.program(11, program11, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  return buffer;
+  }
+function program11(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n				<input class='parameter' minlength='0' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' placeholder='' type='text' value='";
+  if (stack1 = helpers['default']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0['default']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'/>\n			";
+  return buffer;
+  }
+
+function program13(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n				<input class='parameter' minlength='0' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' placeholder='' type='text' value=''/>\n			";
+  return buffer;
+  }
+
+  buffer += "<td class='code'>";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</td>\n<td>\n\n	";
+  stack1 = helpers['if'].call(depth0, depth0.isBody, {hash:{},inverse:self.program(9, program9, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n</td>\n<td>";
+  if (stack1 = helpers.description) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</td>\n<td>";
+  if (stack1 = helpers.paramType) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.paramType; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</td>\n<td>\n	<span class=\"model-signature\"></span>\n</td>\n";
+  return buffer;
+  });
+})();
+
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['param.orig'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.isFile, {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n			<input type=\"file\" name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'/>\n			<div class=\"parameter-content-type\" />\n		";
+  return buffer;
+  }
+
+function program4(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n			";
+  stack1 = helpers['if'].call(depth0, depth0['default'], {hash:{},inverse:self.program(7, program7, data),fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  return buffer;
+  }
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n				<textarea class='body-textarea' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'>";
+  if (stack1 = helpers['default']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0['default']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n			";
+  return buffer;
+  }
+
+function program7(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n				<textarea class='body-textarea' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "'></textarea>\n				<br />\n				<div class=\"parameter-content-type\" />\n			";
   return buffer;
   }
