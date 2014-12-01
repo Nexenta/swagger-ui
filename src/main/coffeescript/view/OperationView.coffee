@@ -88,20 +88,6 @@ class OperationView extends Backbone.View
     if typeof @model.responseMessages is 'undefined'
       @model.responseMessages = []
 
-    $(@el).html(Handlebars.templates.operation(@model))
-
-    if @model.responseClassSignature and @model.responseClassSignature != 'string'
-      signatureModel =
-        sampleJSON: @model.responseSampleJSON
-        isParam: false
-        signature: @model.responseClassSignature
-        
-      responseSignatureView = new SignatureView({model: signatureModel, tagName: 'div'})
-      $('.model-signature', $(@el)).append responseSignatureView.render().el
-    else
-      @model.responseClassSignature = 'string'
-      $('.model-signature', $(@el)).html(@model.type)
-
     contentTypeModel =
       isParam: false
 
@@ -122,6 +108,24 @@ class OperationView extends Backbone.View
         if !contentTypeModel.consumes
           contentTypeModel.consumes = 'multipart/form-data'
       param.type = type
+      if param.name == 'body'
+        @model.hasBodyParams = true
+      else
+        @model.hasQueryParams = true
+
+    $(@el).html(Handlebars.templates.operation(@model))
+
+    if @model.responseClassSignature and @model.responseClassSignature != 'string'
+      signatureModel =
+        sampleJSON: @model.responseSampleJSON
+        isParam: false
+        signature: @model.responseClassSignature
+
+      responseSignatureView = new SignatureView({model: signatureModel, tagName: 'div'})
+      $('.model-signature', $(@el)).append responseSignatureView.render().el
+    else
+      @model.responseClassSignature = 'string'
+      $('.model-signature', $(@el)).html(@model.type)
 
     responseContentTypeView = new ResponseContentTypeView({model: contentTypeModel})
     $('.response-content-type', $(@el)).append responseContentTypeView.render().el
@@ -138,7 +142,10 @@ class OperationView extends Backbone.View
     # Render a parameter
     param.consumes = consumes
     paramView = new ParameterView({model: param, tagName: 'tr', readOnly: @model.isReadOnly})
-    $('.operation-params', $(@el)).append paramView.render().el
+    if param.name != 'body'
+      $('.operation-params', $(@el)).append paramView.render().el
+    else
+      $('.body-params', $(@el)).append paramView.render().el
 
   addStatusCode: (statusCode) ->
     # Render status codes

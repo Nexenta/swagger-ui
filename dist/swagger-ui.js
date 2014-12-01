@@ -439,22 +439,28 @@ function program16(depth0,data) {
 function program18(depth0,data) {
   
   
-  return "\n          <h4>Parameters</h4>\n          <table class='fullwidth'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n            <th style=\"width: 310px; max-width: 310px\">Value</th>\n            <th style=\"width: 200px; max-width: 200px\">Description</th>\n            <th style=\"width: 100px; max-width: 100px\">Parameter Type</th>\n            <th style=\"width: 220px; max-width: 230px\">Data Type</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n          ";
+  return "\n          <h4>Parameters</h4>\n          <table class='fullwidth'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n            <th style=\"width: 110px; max-width: 110px\">Value</th>\n            <th style=\"width: 400px; max-width: 400px\">Description</th>\n            <th style=\"width: 120px; max-width: 120px\">Parameter Type</th>\n            <th style=\"width: 200px; max-width: 230px\">Data Type</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n          ";
   }
 
 function program20(depth0,data) {
   
   
-  return "\n          <div style='margin:0;padding:0;display:inline'></div>\n          <h4>Response Messages</h4>\n          <table class='fullwidth'>\n            <thead>\n            <tr>\n              <th>HTTP Status Code</th>\n              <th>Reason</th>\n              <th>Response Model</th>\n            </tr>\n            </thead>\n            <tbody class=\"operation-status\">\n            \n            </tbody>\n          </table>\n          ";
+  return "\n          <h4>Payload</h4>\n          <table class='fullwidth'>\n          <thead>\n            <th style=\"min-width: 200px; max-width: 220px\">Body</th>\n            <th style=\"min-width: 600px; max-width: 650px\">Data Type</th>\n          </thead>\n          <tbody class=\"body-params\">\n          </tbody>\n          </table>\n          ";
   }
 
 function program22(depth0,data) {
   
   
-  return "\n          ";
+  return "\n          <div style='margin:0;padding:0;display:inline'></div>\n          <h4>Response Messages</h4>\n          <table class='fullwidth'>\n            <thead>\n            <tr>\n              <th>HTTP Status Code</th>\n              <th>Reason</th>\n              <th>Response Model</th>\n            </tr>\n            </thead>\n            <tbody class=\"operation-status\">\n            \n            </tbody>\n          </table>\n          ";
   }
 
 function program24(depth0,data) {
+  
+  
+  return "\n          ";
+  }
+
+function program26(depth0,data) {
   
   
   return "\n          <div class='sandbox_header'>\n            <input class='submit' name='commit' type='button' value='Try it out!' />\n            <a href='#' class='response_hider' style='display:none'>Hide Response</a>\n            <span class='response_throbber' style='display:none'></span>\n          </div>\n          ";
@@ -550,13 +556,16 @@ function program24(depth0,data) {
   stack1 = helpers['if'].call(depth0, depth0.type, {hash:{},inverse:self.noop,fn:self.program(16, program16, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <form accept-charset='UTF-8' class='sandbox'>\n          <div style='margin:0;padding:0;display:inline'></div>\n          ";
-  stack1 = helpers['if'].call(depth0, depth0.parameters, {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
+  stack1 = helpers['if'].call(depth0, depth0.hasQueryParams, {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n          ";
-  stack1 = helpers['if'].call(depth0, depth0.responseMessages, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  stack1 = helpers['if'].call(depth0, depth0.hasBodyParams, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n          ";
-  stack1 = helpers['if'].call(depth0, depth0.isReadOnly, {hash:{},inverse:self.program(24, program24, data),fn:self.program(22, program22, data),data:data});
+  stack1 = helpers['if'].call(depth0, depth0.responseMessages, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          ";
+  stack1 = helpers['if'].call(depth0, depth0.isReadOnly, {hash:{},inverse:self.program(26, program26, data),fn:self.program(24, program24, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </form>\n        <div class='response' style='display:none'>\n          <h4>Request URL</h4>\n          <div class='block request_url'></div>\n          <h4>Response Body</h4>\n          <div class='block response_body'></div>\n          <h4>Response Code</h4>\n          <div class='block response_code'></div>\n          <h4>Response Headers</h4>\n          <div class='block response_headers'></div>\n        </div>\n      </div>\n    </li>\n  </ul>\n";
   return buffer;
@@ -635,7 +644,7 @@ function program14(depth0,data) {
 function program16(depth0,data) {
   
   
-  return "\n          <h4>Response Class</h4>\n          <p><span class=\"model-signature\" /></p>\n          <br/>\n          <div class=\"response-content-type\" />\n        ";
+  return "\n          <h4>Response Class</h4>\n          <p><span class=\"model-signature\" /></p>\n          <br/>\n        ";
   }
 
 function program18(depth0,data) {
@@ -1465,6 +1474,51 @@ function program4(depth0,data) {
 
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['request_body'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <textarea class='body-textarea' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'>";
+  if (stack1 = helpers.defaultValue) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.defaultValue; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n    ";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <textarea class='body-textarea' name='";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'>";
+  if (stack1 = helpers.sampleJSON) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.sampleJSON; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n    ";
+  return buffer;
+  }
+
+  buffer += "<td>\n    ";
+  stack1 = helpers['if'].call(depth0, depth0.defaultValue, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</td>\n<td>\n    <span class=\"model-signature\"></span>\n</td>\n";
+  return buffer;
+  });
+})();
+
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['resource'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -2181,22 +2235,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (typeof this.model.responseMessages === 'undefined') {
         this.model.responseMessages = [];
       }
-      $(this.el).html(Handlebars.templates.operation(this.model));
-      if (this.model.responseClassSignature && this.model.responseClassSignature !== 'string') {
-        signatureModel = {
-          sampleJSON: this.model.responseSampleJSON,
-          isParam: false,
-          signature: this.model.responseClassSignature
-        };
-        responseSignatureView = new SignatureView({
-          model: signatureModel,
-          tagName: 'div'
-        });
-        $('.model-signature', $(this.el)).append(responseSignatureView.render().el);
-      } else {
-        this.model.responseClassSignature = 'string';
-        $('.model-signature', $(this.el)).html(this.model.type);
-      }
       contentTypeModel = {
         isParam: false
       };
@@ -2223,6 +2261,27 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
           }
         }
         param.type = type;
+        if (param.name === 'body') {
+          this.model.hasBodyParams = true;
+        } else {
+          this.model.hasQueryParams = true;
+        }
+      }
+      $(this.el).html(Handlebars.templates.operation(this.model));
+      if (this.model.responseClassSignature && this.model.responseClassSignature !== 'string') {
+        signatureModel = {
+          sampleJSON: this.model.responseSampleJSON,
+          isParam: false,
+          signature: this.model.responseClassSignature
+        };
+        responseSignatureView = new SignatureView({
+          model: signatureModel,
+          tagName: 'div'
+        });
+        $('.model-signature', $(this.el)).append(responseSignatureView.render().el);
+      } else {
+        this.model.responseClassSignature = 'string';
+        $('.model-signature', $(this.el)).html(this.model.type);
       }
       responseContentTypeView = new ResponseContentTypeView({
         model: contentTypeModel
@@ -2249,7 +2308,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         tagName: 'tr',
         readOnly: this.model.isReadOnly
       });
-      return $('.operation-params', $(this.el)).append(paramView.render().el);
+      if (param.name !== 'body') {
+        return $('.operation-params', $(this.el)).append(paramView.render().el);
+      } else {
+        return $('.body-params', $(this.el)).append(paramView.render().el);
+      }
     };
 
     OperationView.prototype.addStatusCode = function(statusCode) {
@@ -2728,20 +2791,24 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     ParameterView.prototype.template = function() {
-      if (this.model.isList) {
-        return Handlebars.templates.param_list;
+      if (this.model.isBody) {
+        return Handlebars.templates.request_body;
       } else {
-        if (this.options.readOnly) {
-          if (this.model.required) {
-            return Handlebars.templates.param_readonly_required;
-          } else {
-            return Handlebars.templates.param_readonly;
-          }
+        if (this.model.isList) {
+          return Handlebars.templates.param_list;
         } else {
-          if (this.model.required) {
-            return Handlebars.templates.param_required;
+          if (this.options.readOnly) {
+            if (this.model.required) {
+              return Handlebars.templates.param_readonly_required;
+            } else {
+              return Handlebars.templates.param_readonly;
+            }
           } else {
-            return Handlebars.templates.param;
+            if (this.model.required) {
+              return Handlebars.templates.param_required;
+            } else {
+              return Handlebars.templates.param;
+            }
           }
         }
       }

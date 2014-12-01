@@ -399,7 +399,7 @@
 }
 .swagger-section .swagger-ui-wrap .body-textarea {
   width: 300px;
-  height: 100px;
+  height: 150px;
   border: 1px solid #aaa;
 }
 .swagger-section .swagger-ui-wrap .markdown p code,
@@ -413,7 +413,7 @@
   font-weight: bold;
 }
 .swagger-section .swagger-ui-wrap input.parameter {
-  width: 300px;
+  width: 200px;
   border: 1px solid #aaa;
 }
 .swagger-section .swagger-ui-wrap h1 {
