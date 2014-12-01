@@ -46,6 +46,8 @@ class OperationView extends Backbone.View
   render: ->
     isMethodSubmissionSupported = true #jQuery.inArray(@model.method, @model.supportedSubmitMethods) >= 0
     @model.isReadOnly = true unless isMethodSubmissionSupported
+    if @model.nickname.indexOf('Async_') is 0
+      @model.async = true
 
     # 1.2 syntax for description was `notes`
     @model.description = (@model.description || @model.notes)

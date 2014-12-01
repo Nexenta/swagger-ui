@@ -6,6 +6,15 @@
           <span class='http_method'>
           <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
           </span>
+          {{#if async}}
+          <span class='http_method' title='This method is asynchronous by default'>
+          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">ASYNC</a>
+          </span>
+          {{else}}
+          <span class='http_method' title='This method is synchronous by default'>
+          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation" style="visibility: hidden;">SYNC</a>
+          </span>
+          {{/if}}
           <span class='path'>
           <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
           </span>
