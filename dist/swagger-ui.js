@@ -2153,6 +2153,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         opts = {};
       }
       this.auths = opts.auths;
+      this.timeoutMs = 10000;
       return this;
     };
 
@@ -2361,7 +2362,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.submitOperation = function(e) {
-      var error_free, form, isFileUpload, map, o, opts, val, _i, _j, _k, _len, _len1, _len2, _ref5, _ref6, _ref7;
+      var error_free, form, isFileUpload, map, o, opts, showTimeout, val, _i, _j, _k, _len, _len1, _len2, _ref5, _ref6, _ref7;
       if (e != null) {
         e.preventDefault();
       }
@@ -2417,6 +2418,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         if (isFileUpload) {
           return this.handleFileUpload(map, form);
         } else {
+          showTimeout = this.showTimeoutError.bind(this, map);
+          this.timeout = setTimeout(showTimeout, this.timeoutMs);
           return this.model["do"](map, opts, this.showCompleteStatus, this.showErrorStatus, this);
         }
       }
@@ -2551,10 +2554,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.showErrorStatus = function(data, parent) {
+      clearTimeout(parent.timeout);
       return parent.showStatus(data);
     };
 
     OperationView.prototype.showCompleteStatus = function(data, parent) {
+      clearTimeout(parent.timeout);
       return parent.showStatus(data);
     };
 
@@ -2629,6 +2634,18 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         _fn(ln);
       }
       return formatted;
+    };
+
+    OperationView.prototype.showTimeoutError = function(map) {
+      this.invocationUrl = this.model.urlify(map, true);
+      $(".request_url", $(this.el)).html("<pre></pre>");
+      $(".request_url pre", $(this.el)).text(this.invocationUrl);
+      $(".response_code", $(this.el)).html("<pre>None</pre>");
+      $(".response_body", $(this.el)).html("<pre>Timeout error: no answer from server in " + this.timeoutMs + "ms.</pre>");
+      $(".response_headers", $(this.el)).html("<pre>None</pre>");
+      $(".response", $(this.el)).slideDown();
+      $(".response_hider", $(this.el)).show();
+      return $(".response_throbber", $(this.el)).hide();
     };
 
     OperationView.prototype.showStatus = function(response) {

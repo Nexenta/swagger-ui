@@ -12,6 +12,7 @@ class OperationView extends Backbone.View
 
   initialize: (opts={}) ->
     @auths = opts.auths
+    @timeoutMs = 10000
 
     @
 
@@ -196,6 +197,8 @@ class OperationView extends Backbone.View
       if isFileUpload
         @handleFileUpload map, form
       else
+        showTimeout = @showTimeoutError.bind @, map
+        @timeout = setTimeout showTimeout, @timeoutMs
         @model.do(map, opts, @showCompleteStatus, @showErrorStatus, @)
 
   success: (response, parent) ->
@@ -308,10 +311,12 @@ class OperationView extends Backbone.View
 
   # Show error from server
   showErrorStatus: (data, parent) ->
+    clearTimeout parent.timeout
     parent.showStatus data
 
   # show the status codes
   showCompleteStatus: (data, parent) ->
+    clearTimeout parent.timeout
     parent.showStatus data
 
   # Adapted from http://stackoverflow.com/a/2893259/454004
@@ -372,6 +377,18 @@ class OperationView extends Backbone.View
       
     formatted
     
+
+  showTimeoutError: (map) ->
+    @invocationUrl = @model.urlify(map, true)
+
+    $(".request_url", $(@el)).html("<pre></pre>")
+    $(".request_url pre", $(@el)).text(@invocationUrl);
+    $(".response_code", $(@el)).html("<pre>None</pre>")
+    $(".response_body", $(@el)).html "<pre>Timeout error: no answer from server in " + @timeoutMs + "ms.</pre>"
+    $(".response_headers", $(@el)).html("<pre>None</pre>")
+    $(".response", $(@el)).slideDown()
+    $(".response_hider", $(@el)).show()
+    $(".response_throbber", $(@el)).hide()
 
   # puts the response data in UI
   showStatus: (response) ->
