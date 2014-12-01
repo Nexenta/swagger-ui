@@ -399,7 +399,7 @@ class OperationView extends Backbone.View
         json = JSON.stringify(JSON.parse(content), null, "  ")
       catch e
         json = "can't parse JSON.  Raw result:\n\n" + content
-      code = $('<code />').text(json)
+      code = $('<code />').text(json.replace(/\\n/g, "\n").replace(/\\\"/g, "\""))
       pre = $('<pre class="json" />').append(code)
     else if contentType is "application/xml" || /\+xml$/.test(contentType)
       code = $('<code />').text(@formatXml(content))

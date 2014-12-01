@@ -2659,7 +2659,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
           e = _error;
           json = "can't parse JSON.  Raw result:\n\n" + content;
         }
-        code = $('<code />').text(json);
+        code = $('<code />').text(json.replace(/\\n/g, "\n").replace(/\\\"/g, "\""));
         pre = $('<pre class="json" />').append(code);
       } else if (contentType === "application/xml" || /\+xml$/.test(contentType)) {
         code = $('<code />').text(this.formatXml(content));
