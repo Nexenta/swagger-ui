@@ -1,5 +1,5 @@
 // swagger.js
-// version 2.0.46
+// version 2.0.41
 
 (function () {
 
@@ -498,7 +498,7 @@
           }
         }
         o.nickname = this.sanitize(o.nickname);
-        var op = new SwaggerOperation(o.nickname, resource_path, method, o.parameters, o.summary, o.notes, type, responseMessages, this, consumes, produces, o.authorizations, o.deprecated);
+        var op = new SwaggerOperation(o.nickname, resource_path, method, o.parameters, o.summary, o.notes, type, responseMessages, this, consumes, produces, o.authorizations);
         this.operations[op.nickname] = op;
         output.push(this.operationsArray.push(op));
       }
@@ -600,7 +600,8 @@
       modelsToIgnore.push(this.name);
       for (var i = 0; i < this.properties.length; i++) {
         var prop = this.properties[i];
-        result[prop.name] = prop.getSampleValue(modelsToIgnore);
+	if (prop.required)
+          result[prop.name] = prop.getSampleValue(modelsToIgnore);
       }
       modelsToIgnore.pop(this.name);
       return result;
@@ -613,7 +614,7 @@
     this.isCollection = this.dataType && (this.dataType.toLowerCase() === 'array' || this.dataType.toLowerCase() === 'list' || this.dataType.toLowerCase() === 'set');
     this.descr = obj.description;
     this.required = obj.required;
-    this.defaultValue = modelPropertyMacro(obj.defaultValue);
+    this.default = modelPropertyMacro(obj.default);
     if (obj.items != null) {
       if (obj.items.type != null) {
         this.refDataType = obj.items.type;
@@ -659,8 +660,8 @@
 
   SwaggerModelProperty.prototype.toSampleValue = function (value) {
     var result;
-    if ((typeof this.defaultValue !== 'undefined') && this.defaultValue !== null) {
-      result = this.defaultValue;
+    if ((typeof this.default !== 'undefined') && this.default !== null) {
+      result = this.default;
     } else if (value === "integer") {
       result = 0;
     } else if (value === "boolean") {
@@ -691,7 +692,7 @@
     return str;
   };
 
-  var SwaggerOperation = function (nickname, path, method, parameters, summary, notes, type, responseMessages, resource, consumes, produces, authorizations, deprecated) {
+  var SwaggerOperation = function (nickname, path, method, parameters, summary, notes, type, responseMessages, resource, consumes, produces, authorizations) {
     var _this = this;
 
     var errors = [];
@@ -707,7 +708,6 @@
     this.consumes = consumes;
     this.produces = produces;
     this.authorizations = authorizations;
-    this.deprecated = deprecated;
     this["do"] = __bind(this["do"], this);
 
     if (errors.length > 0) {
@@ -739,7 +739,7 @@
       }
       param.type = type;
 
-      if (type && type.toLowerCase() === 'boolean') {
+      if (type.toLowerCase() === 'boolean') {
         param.allowableValues = {};
         param.allowableValues.values = ["true", "false"];
       }
@@ -754,10 +754,10 @@
 
         for (var j = 0; j < enumValue.length; j++) {
           var v = enumValue[j];
-          if (param.defaultValue != null) {
+          if (param.default != null) {
             param.allowableValues.descriptiveValues.push({
               value: String(v),
-              isDefault: (v === param.defaultValue)
+              isDefault: (v === param.default)
             });
           }
           else {
@@ -778,10 +778,10 @@
           if (param.allowableValues.values) {
             for (var j = 0; j < param.allowableValues.values.length; j++) {
               var v = param.allowableValues.values[j];
-              if (param.defaultValue != null) {
+              if (param.default != null) {
                 param.allowableValues.descriptiveValues.push({
                   value: String(v),
-                  isDefault: (v === param.defaultValue)
+                  isDefault: (v === param.default)
                 });
               }
               else {
@@ -794,7 +794,7 @@
           }
         }
       }
-      param.defaultValue = parameterMacro(param.defaultValue);
+      param.default = parameterMacro(param.default);
     }
     this.resource[this.nickname] = function (args, callback, error) {
       return _this["do"](args, callback, error);
@@ -905,12 +905,6 @@
       }
       else if (param.paramType === 'form' || param.paramType.toLowerCase() === 'file')
         possibleParams.push(param);
-      else if (param.paramType === 'body' && param.name !== 'body') {
-        if (args.body) {
-          throw new Error("Saw two body params in an API listing; expecting a max of one.");
-        }
-        args.body = args[param.name];
-      }
     }
 
     if (args.body != null) {
@@ -968,7 +962,7 @@
       if (param.paramType === 'path') {
         if (args[param.name]) {
           // apply path params and remove from args
-          var reg = new RegExp('\\{\\s*?' + param.name + '.*?\\}(?=\\s*?(\\/?|$))', 'gi');
+          var reg = new RegExp('\\{\\s*?' + param.name + '.*?\\}(?=\\s*?(\\/|$))', 'gi');
           url = url.replace(reg, this.encodePathParam(args[param.name]));
           delete args[param.name];
         }
@@ -980,21 +974,11 @@
     var queryParams = "";
     for (var i = 0; i < params.length; i++) {
       var param = params[i];
-      if(param.paramType === 'query') {
-        if (queryParams !== '')
-          queryParams += '&';    
-        if (Array.isArray(param)) {
-          var j;   
-          var output = '';   
-          for(j = 0; j < param.length; j++) {    
-            if(j > 0)    
-              output += ',';   
-            output += encodeURIComponent(param[j]);    
-          }    
-          queryParams += encodeURIComponent(param.name) + '=' + output;    
-        }    
-        else {   
-          queryParams += encodeURIComponent(param.name) + '=' + encodeURIComponent(args[param.name]);                
+      if (param.paramType === 'query') {
+        if (args[param.name] !== undefined) {
+          if (queryParams !== '')
+            queryParams += "&";
+          queryParams += encodeURIComponent(param.name) + '=' + encodeURIComponent(args[param.name]);
         }
       }
     }
@@ -1493,8 +1477,8 @@
         data: response.content.data
       };
 
-      var headers = response._headers.normalized || response._headers;
-      var contentType = (headers["content-type"] || headers["Content-Type"] || null)
+      var contentType = (response._headers["content-type"] || response._headers["Content-Type"] || null)
+
       if (contentType != null) {
         if (contentType.indexOf("application/json") == 0 || contentType.indexOf("+json") > 0) {
           if (response.content.data && response.content.data !== "")
@@ -1663,8 +1647,6 @@
   var sampleModels = {};
   var cookies = {};
 
-  e.parameterMacro = parameterMacro;
-  e.modelPropertyMacro = modelPropertyMacro;
   e.SampleModels = sampleModels;
   e.SwaggerHttp = SwaggerHttp;
   e.SwaggerRequest = SwaggerRequest;
