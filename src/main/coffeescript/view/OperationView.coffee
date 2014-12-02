@@ -6,6 +6,7 @@ class OperationView extends Backbone.View
     'click .submit'           : 'submitOperation'
     'click .response_hider'   : 'hideResponse'
     'click .toggleOperation'  : 'toggleOperationContent'
+    'click .jobStatus'        : 'jobStatus'
     'mouseenter .api-ic'      : 'mouseEnter'
     'mouseout .api-ic'        : 'mouseExit'
   }
@@ -380,7 +381,7 @@ class OperationView extends Backbone.View
 
   showTimeoutError: (map) ->
     @invocationUrl = @model.urlify(map, true)
-
+    
     $(".request_url", $(@el)).html("<pre></pre>")
     $(".request_url pre", $(@el)).text(@invocationUrl);
     $(".response_code", $(@el)).html("<pre>None</pre>")
@@ -431,10 +432,19 @@ class OperationView extends Backbone.View
       code = $('<code />').text(content)
       pre = $('<pre class="json" />').append(code)
 
+    if response.status is 202
+      jobStatus = response.headers["location"] || response.headers["Location"]
+      if jobStatus
+        reqStatus = "<input class='jobStatus' name='job' type='button' value='202' />"
+        @jobStatus = jobStatus
+
+    if !reqStatus
+        reqStatus = "<pre>" + response.status + "</pre>"
+
     response_body = pre
     $(".request_url", $(@el)).html("<pre></pre>") 
     $(".request_url pre", $(@el)).text(url);
-    $(".response_code", $(@el)).html "<pre>" + response.status + "</pre>"
+    $(".response_code", $(@el)).html reqStatus
     $(".response_body", $(@el)).html response_body
     $(".response_headers", $(@el)).html "<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>"
     $(".response", $(@el)).slideDown()
@@ -448,3 +458,30 @@ class OperationView extends Backbone.View
   toggleOperationContent: ->
     elem = $('#' + Docs.escapeResourceName(@model.parentId) + "_" + @model.nickname + "_content")
     if elem.is(':visible') then Docs.collapseOperation(elem) else Docs.expandOperation(elem)
+
+  jobStatus: (e) ->
+    e?.preventDefault()
+    @invocationUrl = window.location.origin + @jobStatus
+    if @invocationUrl.indexOf('file://') is 0
+      @invocationUrl = window.location.search.match(/url=([^&]+)/)[1] + @jobStatus.slice(1)
+    headerParams = {}
+    for param in @model.parameters
+      if param.paramType is 'header'
+        headerParams[param.name] = map[param.name]
+    $(".request_url", $(@el)).html("<pre></pre>")
+    $(".request_url pre", $(@el)).text(@invocationUrl);
+    obj =
+      type: 'GET'
+      url: @invocationUrl
+      headers: headerParams
+      data: undefined
+      dataType: 'json'
+      contentType: false
+      processData: false
+      error: (data, textStatus, error) =>
+        @showErrorStatus(@wrap(data), @)
+      success: (data) =>
+        @showResponse(data, @)
+      complete: (data) =>
+        @showCompleteStatus(@wrap(data), @)
+    jQuery.ajax(obj)
