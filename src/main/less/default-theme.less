@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(../fonts/OpenSans400.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Cousine';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Cousine'), url(../fonts/Cousine-Regular.ttf) format('truetype');
+}
+
+.swagger-section {
+
+    #header {
+        background-color: #e66b00;
+        padding: 14px;
+
+        a#logo {
+            font-size: 1.1em;
+            text-decoration: none;
+            font-weight: 600;
+            background: transparent url(../images/logo_small.png) no-repeat left center;
+            padding: 20px 0 20px 40px;
+            color: white;
+            opacity: 0.8;
+        }
+    }
+
+    .swagger-ui-wrap {
+        font-family: 'Open Sans';
+
+        b, h1, strong, .model-signature, ul#resources,
+        form.formtastic fieldset.inputs ol li.text textarea,
+        ul#resources li.resource div.heading h2,
+        p#colophon, .markdown ol, .markdown ul {
+            font-family: "Open Sans", sans-serif;
+        };
+
+        /* Monotype font */
+        pre, .body-textarea, .markdown p code, .markdown li code, .code, .markdown pre, 
+        ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.content div.response div.block pre {
+            font-family: 'Cousine';
+        }
+    }
+
+    .swagger-ui-wrap {
+        ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.http_method a {
+            padding: 6px 0 5px;
+        }
+
+        input.parameter {
+            font-family: "Open Sans", sans-serif;
+            font-size: 0.9em;
+        }
+    }
+}

@@ -600,8 +600,7 @@
       modelsToIgnore.push(this.name);
       for (var i = 0; i < this.properties.length; i++) {
         var prop = this.properties[i];
-	if (prop.required)
-          result[prop.name] = prop.getSampleValue(modelsToIgnore);
+        result[prop.name] = prop.getSampleValue(modelsToIgnore);
       }
       modelsToIgnore.pop(this.name);
       return result;
@@ -614,7 +613,7 @@
     this.isCollection = this.dataType && (this.dataType.toLowerCase() === 'array' || this.dataType.toLowerCase() === 'list' || this.dataType.toLowerCase() === 'set');
     this.descr = obj.description;
     this.required = obj.required;
-    this.default = modelPropertyMacro(obj.default);
+    this.defaultValue = modelPropertyMacro(obj.defaultValue);
     if (obj.items != null) {
       if (obj.items.type != null) {
         this.refDataType = obj.items.type;
@@ -660,8 +659,8 @@
 
   SwaggerModelProperty.prototype.toSampleValue = function (value) {
     var result;
-    if ((typeof this.default !== 'undefined') && this.default !== null) {
-      result = this.default;
+    if ((typeof this.defaultValue !== 'undefined') && this.defaultValue !== null) {
+      result = this.defaultValue;
     } else if (value === "integer") {
       result = 0;
     } else if (value === "boolean") {
@@ -754,10 +753,10 @@
 
         for (var j = 0; j < enumValue.length; j++) {
           var v = enumValue[j];
-          if (param.default != null) {
+          if (param.defaultValue != null) {
             param.allowableValues.descriptiveValues.push({
               value: String(v),
-              isDefault: (v === param.default)
+              isDefault: (v === param.defaultValue)
             });
           }
           else {
@@ -778,10 +777,10 @@
           if (param.allowableValues.values) {
             for (var j = 0; j < param.allowableValues.values.length; j++) {
               var v = param.allowableValues.values[j];
-              if (param.default != null) {
+              if (param.defaultValue != null) {
                 param.allowableValues.descriptiveValues.push({
                   value: String(v),
-                  isDefault: (v === param.default)
+                  isDefault: (v === param.defaultValue)
                 });
               }
               else {
@@ -794,7 +793,7 @@
           }
         }
       }
-      param.default = parameterMacro(param.default);
+      param.defaultValue = parameterMacro(param.defaultValue);
     }
     this.resource[this.nickname] = function (args, callback, error) {
       return _this["do"](args, callback, error);
