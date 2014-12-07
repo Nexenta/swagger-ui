@@ -9,6 +9,7 @@ class OperationView extends Backbone.View
     'click .jobStatus'        : 'jobStatus'
     'mouseenter .api-ic'      : 'mouseEnter'
     'mouseout .api-ic'        : 'mouseExit'
+    'click .collapser'        : 'collapserClick'
   }
 
   initialize: (opts={}) ->
@@ -16,6 +17,20 @@ class OperationView extends Backbone.View
     @timeoutMs = 10000
 
     @
+
+  collapserClick: (el) ->
+    $this = $(el.currentTarget)
+
+    $this.toggleClass 'collapsed'
+    block = $this.parent().children '.block';
+    ul = block.children 'ul'
+
+    if $this.hasClass 'collapsed'
+      ul.hide()
+      block.children('.dots, .comments').show()
+    else
+      ul.show()
+      block.children('.dots, .comments').hide()
 
   mouseEnter: (e) ->
     elem = $(e.currentTarget.parentNode).find('#api_information_panel')
@@ -417,8 +432,11 @@ class OperationView extends Backbone.View
         json = JSON.stringify(JSON.parse(content), null, "  ")
       catch e
         json = "can't parse JSON.  Raw result:\n\n" + content
-      code = $('<code />').text(json.replace(/\\n/g, "\n").replace(/\\\"/g, "\""))
-      pre = $('<pre class="json" />').append(code)
+      # code = $('<code />').text(json.replace(/\\n/g, "\n").replace(/\\\"/g, "\""))
+      pre = $('<pre class="json" />').jsonView JSON.parse(json, {
+        nl2br: true
+      })
+
     else if contentType is "application/xml" || /\+xml$/.test(contentType)
       code = $('<code />').text(@formatXml(content))
       pre = $('<pre class="xml" />').append(code)
@@ -446,7 +464,7 @@ class OperationView extends Backbone.View
     $(".request_url pre", $(@el)).text(url);
     $(".response_code", $(@el)).html reqStatus
     $(".response_body", $(@el)).html response_body
-    $(".response_headers", $(@el)).html "<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>"
+    $(".response_headers", $(@el)).html $("<pre class='json'>").jsonView(response.headers)
     $(".response", $(@el)).slideDown()
     $(".response_hider", $(@el)).show()
     $(".response_throbber", $(@el)).hide()
