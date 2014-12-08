@@ -1,8 +1,24 @@
 class ResourceView extends Backbone.View
+  onFilter: (filter) ->
+    items = filter.split '/'
+    regex = new RegExp items[0]
+
+    if regex.test @model.name
+      @.$el.show()
+    else
+      @.$el.hide()
+
+    if items.length > 1
+      @.$el.children('ul').show()
+    else
+      @.$el.children('ul').hide()
+
   initialize: (opts={}) ->
     @auths = opts.auths
     if "" is @model.description 
       @model.description = null
+
+    eventBus.on 'filter', @onFilter, @
 
   render: ->
     $(@el).html(Handlebars.templates.resource(@model))

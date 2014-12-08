@@ -4,8 +4,14 @@ class MainView extends Backbone.View
     'method'  : (a,b) -> return a.method.localeCompare(b.method),
   }
 
+  events: {
+    'keyup #filter-input': 'filterMethods'
+  }
+
+  filterMethods: ->
+    eventBus.trigger 'filter', @.$el.find('#filter-input').val()
+
   initialize: (opts={}) ->
-    # set up the UI for input
     @model.auths = []
     for key, value of @model.securityDefinitions
       auth = {name: key, type: value.type, value: value}
@@ -64,7 +70,7 @@ class MainView extends Backbone.View
       @addResource resource, @model.auths
     @
 
-  addResource: (resource, auths) ->
+  addResource: (resource, auths, display) ->
     # Render a resource and add it to resources li
     resource.id = resource.id.replace(/\s/g, '_')
     resourceView = new ResourceView({

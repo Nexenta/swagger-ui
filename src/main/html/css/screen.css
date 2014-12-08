@@ -1287,6 +1287,17 @@
 .swagger-section .swagger-ui-wrap .json-view ul li {
   margin-bottom: 2px;
 }
+.swagger-section .swagger-ui-wrap .filter {
+  text-align: center;
+}
+.swagger-section .swagger-ui-wrap .filter input {
+  width: 80%;
+  font-family: 'Open Sans';
+  font-size: 1em;
+}
+.swagger-section .swagger-ui-wrap .filter span {
+  margin-right: 5px;
+}
 /**
  * json-view - Collapsible JSON Viewer
  * @version v1.0.0

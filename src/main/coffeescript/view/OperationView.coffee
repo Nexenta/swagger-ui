@@ -11,11 +11,17 @@ class OperationView extends Backbone.View
     'mouseout .api-ic'        : 'mouseExit'
     'click .collapser'        : 'collapserClick'
   }
+  onFilter: (filter) ->
+    regex = new RegExp filter
+    if regex.test @model.path
+      @.$el.show()
+    else
+      @.$el.hide()
 
   initialize: (opts={}) ->
     @auths = opts.auths
     @timeoutMs = 10000
-
+    eventBus.on 'filter', @onFilter, @
     @
 
   collapserClick: (el) ->

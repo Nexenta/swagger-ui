@@ -343,7 +343,7 @@ function program10(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class='info' id='api_info'>\n  ";
+  buffer += "<div class='info' id='api_info'>\n  <div class='filter'>\n    <input type='text' id='filter-input' placeholder='Filter API methods (E.g. network/hosts)'>\n  </div>\n  ";
   stack1 = helpers['if'].call(depth0, depth0.info, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n<div class='container' id='resources_container'>\n  <ul id='resources'></ul>\n\n  <div class=\"footer\">\n    <br>\n    <br>\n    <h4 style=\"color: #999\">[ <span style=\"font-variant: small-caps\">base url</span>: ";
@@ -1617,6 +1617,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
     };
 
+    MainView.prototype.events = {
+      'keyup #filter-input': 'filterMethods'
+    };
+
+    MainView.prototype.filterMethods = function() {
+      return eventBus.trigger('filter', this.$el.find('#filter-input').val());
+    };
+
     MainView.prototype.initialize = function(opts) {
       var auth, key, name, url, value, _ref3;
       if (opts == null) {
@@ -1694,7 +1702,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       return this;
     };
 
-    MainView.prototype.addResource = function(resource, auths) {
+    MainView.prototype.addResource = function(resource, auths, display) {
       var resourceView;
       resource.id = resource.id.replace(/\s/g, '_');
       resourceView = new ResourceView({
@@ -1724,14 +1732,31 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       return _ref3;
     }
 
+    ResourceView.prototype.onFilter = function(filter) {
+      var items, regex;
+      items = filter.split('/');
+      regex = new RegExp(items[0]);
+      if (regex.test(this.model.name)) {
+        this.$el.show();
+      } else {
+        this.$el.hide();
+      }
+      if (items.length > 1) {
+        return this.$el.children('ul').show();
+      } else {
+        return this.$el.children('ul').hide();
+      }
+    };
+
     ResourceView.prototype.initialize = function(opts) {
       if (opts == null) {
         opts = {};
       }
       this.auths = opts.auths;
       if ("" === this.model.description) {
-        return this.model.description = null;
+        this.model.description = null;
       }
+      return eventBus.on('filter', this.onFilter, this);
     };
 
     ResourceView.prototype.render = function() {
@@ -1811,12 +1836,23 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       'click .collapser': 'collapserClick'
     };
 
+    OperationView.prototype.onFilter = function(filter) {
+      var regex;
+      regex = new RegExp(filter);
+      if (regex.test(this.model.path)) {
+        return this.$el.show();
+      } else {
+        return this.$el.hide();
+      }
+    };
+
     OperationView.prototype.initialize = function(opts) {
       if (opts == null) {
         opts = {};
       }
       this.auths = opts.auths;
       this.timeoutMs = 10000;
+      eventBus.on('filter', this.onFilter, this);
       return this;
     };
 
