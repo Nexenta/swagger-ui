@@ -24,6 +24,15 @@ class OperationView extends Backbone.View
     @auths = opts.auths
     @timeoutMs = 10000
     eventBus.on 'filter', @onFilter, @
+    me = @
+    # check model for {parameters} and mark them as required
+    $.each @model.parameters, (i, param) -> (
+      if param.name
+        tParam = '{' + param.name + '}'
+        if me.model.path.indexOf(tParam) != -1
+          param.required = true
+    )
+
     @
 
   collapserClick: (el) ->

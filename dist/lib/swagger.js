@@ -959,15 +959,11 @@
     for (var i = 0; i < params.length; i++) {
       var param = params[i];
       if (param.paramType === 'path') {
-        if (args[param.name]) {
-          // apply path params and remove from args
-          var reg = new RegExp('\\{\\s*?' + param.name + '.*?\\}(?=\\s*?(\\/|$))', 'gi');
-          url = url.replace(reg, this.encodePathParam(args[param.name]));
-          delete args[param.name];
-        }
-        else
-          throw "" + param.name + " is a required path param.";
-      }
+        // apply path params and remove from args
+        var reg = new RegExp('\\{\\s*?' + param.name + '.*?\\}(?=\\s*?(\\/|$))', 'gi');
+        // send empty string instead of missing path parameter to get valid REST error 
+        url = url.replace(reg, this.encodePathParam(args[param.name] || ''));
+        delete args[param.name];      }
     }
 
     var queryParams = "";

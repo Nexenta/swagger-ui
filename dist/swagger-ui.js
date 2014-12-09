@@ -1865,12 +1865,23 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.initialize = function(opts) {
+      var me;
       if (opts == null) {
         opts = {};
       }
       this.auths = opts.auths;
       this.timeoutMs = 10000;
       eventBus.on('filter', this.onFilter, this);
+      me = this;
+      $.each(this.model.parameters, function(i, param) {
+        var tParam;
+        if (param.name) {
+          tParam = '{' + param.name + '}';
+          if (me.model.path.indexOf(tParam) !== -1) {
+            return param.required = true;
+          }
+        }
+      });
       return this;
     };
 

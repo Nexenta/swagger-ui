@@ -1278,7 +1278,7 @@
 }
 .swagger-section .swagger-ui-wrap input.parameter {
   font-family: "Open Sans", sans-serif;
-  font-size: 0.9em;
+  font-size: 1em;
 }
 .swagger-section .swagger-ui-wrap .json-view {
   font-family: 'Cousine';
@@ -1297,6 +1297,9 @@
 }
 .swagger-section .swagger-ui-wrap .filter span {
   margin-right: 5px;
+}
+.swagger-section .swagger-ui-wrap table tbody tr td {
+  vertical-align: middle;
 }
 /**
  * json-view - Collapsible JSON Viewer
