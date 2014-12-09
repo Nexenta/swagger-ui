@@ -1733,19 +1733,32 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     }
 
     ResourceView.prototype.onFilter = function(filter) {
-      var items, regex;
-      items = filter.split('/');
-      regex = new RegExp(items[0]);
-      if (regex.test(this.model.name)) {
+      var regex, show;
+      if (filter.length < 2) {
         this.$el.show();
-      } else {
-        this.$el.hide();
+        this.$el.removeClass('active');
+        this.$el.children('ul').hide();
+        this.$el.children('ul li').show();
+        return;
       }
-      if (items.length > 1) {
+      regex = new RegExp(filter);
+      show = false;
+      $.each(this.model.operations, function(i, op) {
+        if (regex.test(op.path)) {
+          return show = true;
+        }
+      });
+      if (show) {
+        this.$el.show();
+        this.$el.addClass('active');
         return this.$el.children('ul').show();
       } else {
-        return this.$el.children('ul').hide();
+        return this.$el.hide();
       }
+    };
+
+    ResourceView.prototype.onChildFound = function(name) {
+      return this.$el.children('ul').show();
     };
 
     ResourceView.prototype.initialize = function(opts) {
@@ -1756,7 +1769,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if ("" === this.model.description) {
         this.model.description = null;
       }
-      return eventBus.on('filter', this.onFilter, this);
+      eventBus.on('filter', this.onFilter, this);
+      return eventBus.on('childFound', this.onChildFound, this);
     };
 
     ResourceView.prototype.render = function() {
@@ -1837,10 +1851,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.onFilter = function(filter) {
-      var regex;
+      var elem, regex;
       regex = new RegExp(filter);
       if (regex.test(this.model.path)) {
-        return this.$el.show();
+        this.$el.show();
+        elem = $('#' + Docs.escapeResourceName(this.model.parentId) + "_" + this.model.nickname + "_content");
+        if (elem.is(':visible')) {
+          return Docs.collapseOperation(elem);
+        }
       } else {
         return this.$el.hide();
       }

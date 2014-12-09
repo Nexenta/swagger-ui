@@ -1,17 +1,28 @@
 class ResourceView extends Backbone.View
   onFilter: (filter) ->
-    items = filter.split '/'
-    regex = new RegExp items[0]
-
-    if regex.test @model.name
+    if filter.length < 2
       @.$el.show()
+      @.$el.removeClass 'active'
+      @.$el.children('ul').hide()
+      @.$el.children('ul li').show()
+      return
+
+    regex = new RegExp filter
+
+    show = false;
+    $.each @model.operations, (i, op) ->
+      if regex.test op.path
+        show = true
+
+    if show
+      @.$el.show()
+      @.$el.addClass 'active'
+      @.$el.children('ul').show()
     else
       @.$el.hide()
 
-    if items.length > 1
-      @.$el.children('ul').show()
-    else
-      @.$el.children('ul').hide()
+  onChildFound: (name) ->
+    @.$el.children('ul').show()
 
   initialize: (opts={}) ->
     @auths = opts.auths
@@ -19,6 +30,7 @@ class ResourceView extends Backbone.View
       @model.description = null
 
     eventBus.on 'filter', @onFilter, @
+    eventBus.on 'childFound', @onChildFound, @
 
   render: ->
     $(@el).html(Handlebars.templates.resource(@model))

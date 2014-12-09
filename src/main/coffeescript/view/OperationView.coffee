@@ -15,6 +15,8 @@ class OperationView extends Backbone.View
     regex = new RegExp filter
     if regex.test @model.path
       @.$el.show()
+      elem = $('#' + Docs.escapeResourceName(@model.parentId) + "_" + @model.nickname + "_content")
+      if elem.is(':visible') then Docs.collapseOperation(elem)
     else
       @.$el.hide()
 
