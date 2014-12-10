@@ -9,9 +9,18 @@ class MainView extends Backbone.View
   }
 
   filterMethods: ->
-    eventBus.trigger 'filter', @.$el.find('#filter-input').val()
+    me = @
+    # Delay event to prevent too much calculations
+    if @timer
+      clearTimeout @timer
+
+    @timer = setTimeout( ->
+      eventBus.trigger 'filter', me.$el.find('#filter-input').val()
+      me.timer = null
+    , 100)
 
   initialize: (opts={}) ->
+    @timer = null;
     @model.auths = []
     for key, value of @model.securityDefinitions
       auth = {name: key, type: value.type, value: value}

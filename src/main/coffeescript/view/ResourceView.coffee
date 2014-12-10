@@ -1,34 +1,35 @@
 class ResourceView extends Backbone.View
   onFilter: (filter) ->
-    if filter.length < 2
+    if filter.length < 3
+      @visible = true
+      @hideChildren()
       @.$el.show()
-      @.$el.removeClass 'active'
-      @.$el.children('ul').hide()
-      @.$el.children('ul li').show()
       return
 
-    regex = new RegExp filter
-
-    show = false;
-    $.each @model.operations, (i, op) ->
-      if regex.test op.path
-        show = true
-
-    if show
-      @.$el.show()
-      @.$el.addClass 'active'
-      @.$el.children('ul').show()
-    else
+    if @.$el.is(':visible')
+      @visible = false
       @.$el.hide()
 
   onChildFound: (name) ->
-    @.$el.children('ul').show()
+    if !@visible
+      @.$el.show()
+      @.$el.addClass('active');
+      @.$el.children('ul').show()
+      @visible = true;
+
+  hideChildren: ->
+    if @visible
+      @.$el.children('ul.endpoints').hide()
+      @.$el.children('ul.endpoints').children('li').show()
+      @.$el.removeClass('active');
+      @visible = false;
 
   initialize: (opts={}) ->
     @auths = opts.auths
     if "" is @model.description 
       @model.description = null
 
+    @visible = true
     eventBus.on 'filter', @onFilter, @
     eventBus.on 'childFound', @onChildFound, @
 
@@ -77,7 +78,8 @@ class ResourceView extends Backbone.View
       tagName: 'li',
       className: 'endpoint',
       swaggerOptions: @options.swaggerOptions,
-      auths: @auths
+      auths: @auths,
+      parentView: @
     })
     $('.endpoints', $(@el)).append operationView.render().el
 

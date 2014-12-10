@@ -1622,7 +1622,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     MainView.prototype.filterMethods = function() {
-      return eventBus.trigger('filter', this.$el.find('#filter-input').val());
+      var me;
+      me = this;
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      return this.timer = setTimeout(function() {
+        eventBus.trigger('filter', me.$el.find('#filter-input').val());
+        return me.timer = null;
+      }, 100);
     };
 
     MainView.prototype.initialize = function(opts) {
@@ -1630,6 +1638,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (opts == null) {
         opts = {};
       }
+      this.timer = null;
       this.model.auths = [];
       _ref3 = this.model.securityDefinitions;
       for (key in _ref3) {
@@ -1733,32 +1742,34 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     }
 
     ResourceView.prototype.onFilter = function(filter) {
-      var regex, show;
-      if (filter.length < 2) {
+      if (filter.length < 3) {
+        this.visible = true;
+        this.hideChildren();
         this.$el.show();
-        this.$el.removeClass('active');
-        this.$el.children('ul').hide();
-        this.$el.children('ul li').show();
         return;
       }
-      regex = new RegExp(filter);
-      show = false;
-      $.each(this.model.operations, function(i, op) {
-        if (regex.test(op.path)) {
-          return show = true;
-        }
-      });
-      if (show) {
-        this.$el.show();
-        this.$el.addClass('active');
-        return this.$el.children('ul').show();
-      } else {
+      if (this.$el.is(':visible')) {
+        this.visible = false;
         return this.$el.hide();
       }
     };
 
     ResourceView.prototype.onChildFound = function(name) {
-      return this.$el.children('ul').show();
+      if (!this.visible) {
+        this.$el.show();
+        this.$el.addClass('active');
+        this.$el.children('ul').show();
+        return this.visible = true;
+      }
+    };
+
+    ResourceView.prototype.hideChildren = function() {
+      if (this.visible) {
+        this.$el.children('ul.endpoints').hide();
+        this.$el.children('ul.endpoints').children('li').show();
+        this.$el.removeClass('active');
+        return this.visible = false;
+      }
     };
 
     ResourceView.prototype.initialize = function(opts) {
@@ -1769,6 +1780,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if ("" === this.model.description) {
         this.model.description = null;
       }
+      this.visible = true;
       eventBus.on('filter', this.onFilter, this);
       return eventBus.on('childFound', this.onChildFound, this);
     };
@@ -1814,7 +1826,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         tagName: 'li',
         className: 'endpoint',
         swaggerOptions: this.options.swaggerOptions,
-        auths: this.auths
+        auths: this.auths,
+        parentView: this
       });
       $('.endpoints', $(this.el)).append(operationView.render().el);
       return this.number++;
@@ -1851,9 +1864,30 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.onFilter = function(filter) {
-      var elem, regex;
+      var elem, found, foundWords, item, items, me, regex, _i, _len;
+      me = this;
+      if (filter.length < 3) {
+        return;
+      }
       regex = new RegExp(filter);
-      if (regex.test(this.model.path)) {
+      found = false;
+      if (regex.test(this.model.path.toLowerCase())) {
+        found = true;
+      } else {
+        items = filter.split(' ');
+        foundWords = 0;
+        for (_i = 0, _len = items.length; _i < _len; _i++) {
+          item = items[_i];
+          if (me.model.summary.toLowerCase().indexOf(item.toLowerCase()) !== -1 || !item) {
+            foundWords++;
+          }
+        }
+        if (foundWords === items.length) {
+          found = true;
+        }
+      }
+      if (found) {
+        this.parentView.onChildFound();
         this.$el.show();
         elem = $('#' + Docs.escapeResourceName(this.model.parentId) + "_" + this.model.nickname + "_content");
         if (elem.is(':visible')) {
@@ -1869,10 +1903,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (opts == null) {
         opts = {};
       }
+      me = this;
       this.auths = opts.auths;
       this.timeoutMs = 10000;
+      this.parentView = opts.parentView;
       eventBus.on('filter', this.onFilter, this);
-      me = this;
       $.each(this.model.parameters, function(i, param) {
         var tParam;
         if (param.name) {

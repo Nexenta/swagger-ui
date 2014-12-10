@@ -12,8 +12,28 @@ class OperationView extends Backbone.View
     'click .collapser'        : 'collapserClick'
   }
   onFilter: (filter) ->
+    me = @
+    if filter.length < 3
+      return
+
     regex = new RegExp filter
-    if regex.test @model.path
+
+    found = false
+    if regex.test @model.path.toLowerCase()
+      found = true
+    else
+      items = filter.split(' ')
+      foundWords = 0;
+
+      for item in items
+        if me.model.summary.toLowerCase().indexOf(item.toLowerCase()) != -1 || !item
+          foundWords++
+
+      if foundWords == items.length
+        found = true
+
+    if found
+      @parentView.onChildFound()
       @.$el.show()
       elem = $('#' + Docs.escapeResourceName(@model.parentId) + "_" + @model.nickname + "_content")
       if elem.is(':visible') then Docs.collapseOperation(elem)
@@ -21,10 +41,12 @@ class OperationView extends Backbone.View
       @.$el.hide()
 
   initialize: (opts={}) ->
+    me = @
     @auths = opts.auths
     @timeoutMs = 10000
+    @parentView = opts.parentView
     eventBus.on 'filter', @onFilter, @
-    me = @
+
     # check model for {parameters} and mark them as required
     $.each @model.parameters, (i, param) -> (
       if param.name
