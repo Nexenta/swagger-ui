@@ -1,7 +1,7 @@
 /**
- * json-view - Collapsible JSON Viewer
+ * json-view - jQuery collapsible JSON plugin
  * @version v1.0.0
- * @link http://github.com/Nexenta
+ * @link http://github.com/Nexenta/jquery.json-view
  * @license MIT
  */
 .json-view {
@@ -72,7 +72,9 @@
 }
 
 .json-view .null,
-.json-view .num {
+.json-view .num,
+.json-view .bool,
+.json-view .undef {
     font-weight: bold;
     color: #1A01CC;
 }
@@ -80,7 +82,3 @@
 .json-view .str {
     color: #800;
 }
-
-/*.jsonview .collapser:hover {
-    background: red;
-}*/
