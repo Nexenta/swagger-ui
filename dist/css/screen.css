@@ -165,6 +165,7 @@
 .swagger-section .swagger-ui-wrap table {
   border-collapse: collapse;
   border-spacing: 0;
+  height: 100%;
 }
 .swagger-section .swagger-ui-wrap table thead tr th {
   padding: 5px;
@@ -179,6 +180,7 @@
   background-color: #f0f0f0;
 }
 .swagger-section .swagger-ui-wrap table tbody tr td {
+  height: 100%;
   padding: 6px;
   font-size: 0.9em;
   border-bottom: 1px solid #cccccc;
@@ -399,7 +401,7 @@
 }
 .swagger-section .swagger-ui-wrap .body-textarea {
   width: 300px;
-  height: 150px;
+  height: 100%;
   border: 1px solid #aaa;
 }
 .swagger-section .swagger-ui-wrap .markdown p code,
