@@ -10,6 +10,187 @@
   {{#if info.license}}<div class='info_license'><a href='{{info.license.url}}'>{{info.license.name}}</a></div>{{/if}}
   {{/if}}
 </div>
+
+  {{#if help}}
+  <div class="help_screen">
+      <a href="#" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='none';">x</a>
+      <h1>How to use interactive documentation</h1>
+  <p>Below is the list of endpoint collections. Click on some collection to inspect available REST API methods.</p>
+  <ul id="helpresources">
+      <li id="resource_help" class="resource active">
+          <ul class="endpoints" id="help_endpoint_list" style>
+              <li class="endpoint">
+                  <ul class="operations">
+                      <li class="post operation" id="help_Async_testAs">
+                          <div class="heading">
+                              <h3>
+                                  <span class="http_method">
+                                  <a href="#!/api/endpoint" class="toggleOperation">post</a>
+                                  </span>
+
+                                  <span class="http_method" title="This method is synchronous by default">
+                                  <a href="#!/api/endpoint" class="toggleOperation" style="visibility: hidden;">SYNC</a>
+                                  </span>
+
+                                  <span class="path">
+                                  <a href="#!/api/endpoint" class="toggleOperation ">api/endpoint</a>
+                                  </span>
+                              </h3>
+                              <ul class="options">
+                                  <li>
+                                      <a href="#!/api/endpoint" class="toggleOperation">short description of method</a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </li>
+                  </ul>
+              </li>
+          </ul>
+      </li>
+  </ul>
+
+  <p>Click on the certain method to display detailed information including description, supported arguments, input/output data models.</p>
+    <ul id="helpresources">
+    <li id="resource_help" class="resource active">
+      <ul class="endpoints" id="help_endpoint_list" style>
+        <li class="endpoint">
+          <ul class="operations">
+            <li class="post operation" id="help_Async_testAs">
+              <div class="content" id="test_Async_testAsyncUpdate_content" style="">
+                <h4>Implementation Notes</h4>
+                <p>Notes contain more detailed information about method and its behaviour.</p>
+
+                <h4>Response class</h4>
+                <p>Response class shows data type of the object(s) method returns.</p>
+
+                <form accept-charset="UTF-8" class="sandbox">
+                <div style="margin:0;padding:0;display:inline"></div>
+
+                <h4>Parameters</h4>
+                <p>Here are method parameters. There are two kinds of them: URL parameters that are part of URL and query parameters that will be added to URL as querystring. Parameters can be required or optional. Swagger won't send request if there are unfilled mandatory parameters.</p>
+                <table class="fullwidth">
+                  <thead>
+                    <tr>
+                    <th style="width: 100px; max-width: 100px">Parameter</th>
+                    <th style="width: 110px; max-width: 110px">Value</th>
+                    <th style="width: 400px; max-width: 400px">Description</th>
+                    <th style="width: 120px; max-width: 120px">Parameter Type</th>
+                    <th style="width: 200px; max-width: 230px">Data Type</th>
+                    </tr>
+                  </thead>
+                <tbody class="operation-params">
+                  <tr>
+                    <td class="code required">parent</td>
+                    <td><input class="parameter required" minlength="1" name="parent" placeholder="(required)" type="text" value=""></td>
+                    <td><strong>ID card number</strong></td>
+                    <td>path</td>
+                    <td><span class="model-signature">integer</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">activity</td>
+                    <td><input class="parameter" minlength="1" name="son" type="text" value=""></td>
+                    <td>Current activity</td>
+                    <td>query</td>
+                    <td><span class="model-signature">string</span></td>
+                  </tr>
+                </tbody>
+                </table>
+
+                <h4>Payload</h4>
+                <p>This is the object that will be sent as request body. Object should have a valid JSON syntax. By default it contains only required parameters from data model.</p>
+                <table class="fullwidth">
+                    <thead>
+                    <tr><th style="min-width: 200px; max-width: 220px">Body</th>
+                        <th style="min-width: 600px; max-width: 650px">Data Type</th>
+                    </tr></thead>
+                    <tbody class="body-params">
+                    <tr>
+                        <td><textarea class="body-textarea" name="body">{
+    "name": "Appliance"
+}</textarea></td>
+                        <td><span class="model-signature"><div><div><ul class="signature-nav">
+                            <li><a class="description-link selected">Model</a></li>
+                            <li><a class="snippet-link">Model Schema</a></li>
+                        </ul>
+                            <div>
+                                <div class="signature-container">
+                                    <div class="description" style="display: block;">
+                                        <span class="strong">input {</span><div><span class="propName propReq">name</span> (<span class="propType">string</span>): <span class="propDesc">Product name</span>,</div><div><span class="propName propOpt">vendor</span> (<span class="propType">string</span>, <span class="propOptKey">optional</span>): <span class="propDesc">Product vendor</span></div><span class="strong">}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </span>
+                        </td>
+                    </tr></tbody>
+                </table>
+
+                <h4>Response messages</h4>
+                <p>List of statuses that server returns for this method with their short descriptions.</p>
+                <table class="fullwidth">
+                    <thead>
+                    <tr>
+                        <th>HTTP Status Code</th>
+                        <th>Reason</th>
+                        <th>Response Model</th>
+                    </tr>
+                    </thead>
+                    <tbody class="operation-status">
+
+                    <tr><td width="15%" class="code">201</td>
+                        <td>Created</td>
+                        <td width="50%"><span class="model-signature"></span></td></tr><tr><td width="15%" class="code">202</td>
+                        <td>In progress</td>
+                        <td width="50%"><span class="model-signature"></span></td></tr><tr><td width="15%" class="code">400</td>
+                        <td>Invalid parameters</td>
+                        <td width="50%"><span class="model-signature"></span></td></tr><tr><td width="15%" class="code">404</td>
+                        <td>Not found</td>
+                        <td width="50%"><span class="model-signature"></span></td></tr><tr><td width="15%" class="code">500</td>
+                        <td>Internal server error</td>
+                        <td width="50%"><span class="model-signature"></span></td></tr></tbody>
+                </table>
+                </form>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>Fill at least all required parameters and press 'Try it out!'.</p>
+      <ul id="helpresources">
+          <li id="resource_helq" class="resource active">
+              <ul class="endpoints" id="help_endpoint_lista" style>
+                  <li class="endpoint">
+                      <ul class="operations">
+                          <li class="post operation" id="helpa_Async_testAs">
+                              <div class="content" id="test_Async_testAsyncUpdate_content" style="">
+                              <div class="response" style="">
+                                  <h4>Request URL</h4>
+                                  <p>This field shows URL of the request.</p>
+                                  <div class="block request_url"><pre>http://nef:8080/api/endpoint</pre></div>
+                                  <h4>Response Body</h4>
+                                  <p>This is payload that server returns as a result of performed request. Many operations return empty payload in case of successful operation.</p>
+                                  <div class="block response_body undefined"><pre class="json"><code>no content</code></pre></div>
+                                  <h4>Response Code</h4>
+                                  <p>Status code contain standard number of standard HTTP code. If this code is 202 (operation in progress) a button will appear instead. This button can be used to check status of asynchronous operation.</p>
+                                  <div class="block response_code"><pre>201</pre></div>
+                                  <h4>Response Headers</h4>
+                                  <p>HTTP Headers that server returns.</p>
+                                  <div class="block response_headers"><pre class="json"><div class="json-view"><span class="block"><span class="b">{</span><ul class="obj collapsible level0"><li><span class="q">"</span>access-control-allow-origin<span class="q">"</span>: <span><span class="q">"</span><span class="str">*</span><span class="q">"</span></span>,</li><li><span class="q">"</span>connection<span class="q">"</span>: <span><span class="q">"</span><span class="str">keep-alive</span><span class="q">"</span></span>,</li><li><span class="q">"</span>access-control-allow-headers<span class="q">"</span>: <span><span class="q">"</span><span class="str">X-Requested-With</span><span class="q">"</span></span>,</li><li><span class="q">"</span>transfer-encoding<span class="q">"</span>: <span><span class="q">"</span><span class="str">Identity</span><span class="q">"</span></span></li></ul><span class="dots">...</span><span class="b">}</span><span class="comments">// 5 items</span></span></div></pre></div>
+                              </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+  {{/if}}
+
 <div class='container' id='resources_container'>
   <ul id='resources'></ul>
 
