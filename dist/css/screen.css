@@ -281,6 +281,14 @@
 .swagger-section .help_screen a img {
   border: none;
 }
+.swagger-section .swagger-ui-wrap .close,
+.swagger-section .help_screen .close {
+  text-decoration: none;
+  float: right;
+  font-size: 0.7em;
+  font-weight: bold;
+  color: #999999;
+}
 .swagger-section .swagger-ui-wrap article,
 .swagger-section .help_screen article,
 .swagger-section .swagger-ui-wrap aside,
@@ -1680,6 +1688,15 @@
   background: transparent url(../images/logo_small.png) no-repeat left center;
   padding: 20px 0 20px 40px;
   color: white;
+}
+.swagger-section #header a#help_button {
+  display: none;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  background: transparent;
+  opacity: 0.8;
 }
 .swagger-section #header form#api_selector {
   display: block;

@@ -13,7 +13,8 @@
 
   {{#if help}}
   <div class="help_screen">
-      <a href="#" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='none';">x</a>
+      <a href="#" class="close" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='none';
+                                      document.getElementById('help_button').style.display='inline';">[close]</a>
       <h1>How to use interactive documentation</h1>
   <p>Below is the list of endpoint collections. Click on some collection to inspect available REST API methods.</p>
   <ul id="helpresources">
