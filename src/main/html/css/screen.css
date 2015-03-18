@@ -1689,7 +1689,8 @@
   padding: 20px 0 20px 40px;
   color: white;
 }
-.swagger-section #header a#help_button {
+.swagger-section #header a#help_button,
+.swagger-section #header a#auth_button {
   display: none;
   font-size: 1.1em;
   font-weight: 600;
@@ -1697,6 +1698,12 @@
   color: white;
   background: transparent;
   opacity: 0.8;
+}
+.swagger-section #header input#username,
+.swagger-section #header input#password {
+  font-family: 'Open Sans';
+  font-size: 1em;
+  text-decoration: none;
 }
 .swagger-section #header form#api_selector {
   display: block;

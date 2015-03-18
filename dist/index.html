@@ -68,6 +68,40 @@
         }
       }
 
+      function log_in() {
+        var obj = {
+          username: $('#username')[0].value,
+          password: $('#password')[0].value
+        };
+
+        if (!obj.username.trim() || !obj.password.trim())
+          return;
+
+        $.ajax({
+          type: "POST",
+          url: "../auth/login",
+          data: obj,
+          dataType: "json",
+          success: function(data) {
+            if (data.token) {
+              window.authorizations.add("Authorization",
+                new ApiKeyAuthorization("Authorization", 'Bearer ' + data.token, "header"));
+                alert('Logged in as \'' + obj.username + '\'');
+            }
+          },
+          error: function(xhr, err) {
+            if (xhr.status == 404)
+              alert('Authorization is not supported for this server.');
+            else if (xhr.status == 401)
+              alert('Unable to login as \'' + obj.username + '\'');
+            else
+              alert(err);
+          }
+        });
+      }
+
+      $('#auth_button').click(log_in);
+
       $('#input_apiKey').change(function() {
         addApiKeyAuthorization();
       });
@@ -88,8 +122,13 @@
 <div id='header'>
   <div class="swagger-ui-wrap">
     <table width="100%"><tr>
-        <td width="90%">
+        <td width="45%">
             <a id="logo" href="/docs">NexentaStor REST API</a>
+        </td>
+        <td>
+            <input id="username" placeholder="user name" type="text" name="user"/>
+            <input id="password" placeholder="password" type="text" name="password"/>
+            <a href="#" id="auth_button" style="display: inline-block">Login</a>
         </td>
         <td>
             <a href="#" id="help_button" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='block';document.getElementById('help_button').style.display='none'">Help</a>

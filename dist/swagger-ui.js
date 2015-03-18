@@ -349,7 +349,7 @@ function program12(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class='info' id='api_info'>\n    <div class='filter'>\n    <input type='text' id='filter-input' placeholder='Filter API methods (E.g. network/hosts)'>\n  </div>\n  ";
+  buffer += "<div class='info' id='api_info'>\n  <div class='filter'>\n    <input type='text' id='filter-input' placeholder='Filter API methods (E.g. network/hosts)'>\n  </div>\n  ";
   stack1 = helpers['if'].call(depth0, depth0.info, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n\n  ";
