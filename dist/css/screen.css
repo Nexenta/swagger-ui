@@ -1690,7 +1690,8 @@
   color: white;
 }
 .swagger-section #header a#help_button,
-.swagger-section #header a#auth_button {
+.swagger-section #header a#auth_button,
+.swagger-section #header a#logged_user {
   display: none;
   font-size: 1.1em;
   font-weight: 600;

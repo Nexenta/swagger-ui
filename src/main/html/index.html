@@ -86,7 +86,11 @@
             if (data.token) {
               window.authorizations.add("Authorization",
                 new ApiKeyAuthorization("Authorization", 'Bearer ' + data.token, "header"));
-                alert('Logged in as \'' + obj.username + '\'');
+                $('#username')[0].style.display = 'none';
+                $('#password')[0].style.display = 'none';
+                $('#auth_button')[0].style.display = 'none';
+                $('a#logged_user').text('Logged in as \'' + obj.username + '\'');
+                $('#logged_user')[0].style.display = 'inline-block';;
             }
           },
           error: function(xhr, err) {
@@ -100,7 +104,15 @@
         });
       }
 
+      function log_out() {
+        $('#username')[0].style.display = 'inline-block';
+        $('#password')[0].style.display = 'inline-block';
+        $('#auth_button')[0].style.display = 'inline-block';
+        $('#logged_user')[0].style.display = 'none';
+      }
+
       $('#auth_button').click(log_in);
+      $('#logged_user').click(log_out);
 
       $('#input_apiKey').change(function() {
         addApiKeyAuthorization();
@@ -129,6 +141,7 @@
             <input id="username" placeholder="user name" type="text" name="user"/>
             <input id="password" placeholder="password" type="text" name="password"/>
             <a href="#" id="auth_button" style="display: inline-block">Login</a>
+            <a href="#" id="logged_user"></a>
         </td>
         <td>
             <a href="#" id="help_button" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='block';document.getElementById('help_button').style.display='none'">Help</a>
