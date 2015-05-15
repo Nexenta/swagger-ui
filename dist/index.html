@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Swagger UI</title>
+  <title>Nedge API - Swagger UI</title>
   <link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
   <link href='css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -25,15 +25,21 @@
   <script type="text/javascript">
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
+      console.log("url is", url);
+
       if (url && url.length > 1) {
+        console.log("HEREHERE");
+
         url = url[1];
       } else {
-        url = "http://petstore.swagger.wordnik.com/v2/swagger.json";
+        console.log("Therethere");
+        // url = "http://10.3.30.116:8081/v2/swagger.json";
+        url = "http://0.0.0.0";
       }
       window.swaggerUi = new SwaggerUi({
         url: url,
         dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'head'],
         onComplete: function(swaggerApi, swaggerUi){
           log("Loaded SwaggerUI");
           if(typeof initOAuth == "function") {
@@ -61,7 +67,8 @@
         log("key: " + key);
         if(key && key.trim() != "") {
             log("added key " + key);
-            window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", key, "query"));
+            // window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", key, "header", ":"));
+            // window.authorizations.add("kkk", new PasswordAuthorization("basic", "admin", "nexenta"));
         }
       }
 
@@ -71,12 +78,16 @@
 
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
       /*
-        var apiKey = "myApiKeyXXXX123456789";
-        $('#input_apiKey').val(apiKey);
-        addApiKeyAuthorization();
-      */
+      var apiKey = "myApiKeyXXXX123456789";
+      $('#input_apiKey').val(apiKey);
+      addApiKeyAuthorization();
+      // */
+
+      // window.authorizations.add("kkk", new PasswordAuthorization("basic", "admin", "nexenta"));
+      window.authorizations.add("kk2", new ApiKeyAuthorization("Authorization", "Basic YWRtaW46bmV4ZW50YQ==", "header", ":"));
 
       window.swaggerUi.load();
+      
   });
   </script>
 </head>
@@ -84,16 +95,10 @@
 <body class="swagger-section">
 <div id='header'>
   <div class="swagger-ui-wrap">
-    <a id="logo" href="http://swagger.wordnik.com">swagger</a>
+    <a id="logo" href="http://www.nexenta.com/products/nexentaedge">NexentaEdge</a>
     <form id='api_selector'>
-      <div class='input icon-btn'>
-        <img id="show-pet-store-icon" src="images/pet_store_api.png" title="Show Swagger Petstore Example Apis">
-      </div>
-      <div class='input icon-btn'>
-        <img id="show-wordnik-dev-icon" src="images/wordnik_api.png" title="Show Wordnik Developer Apis">
-      </div>
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <!-- <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div> -->
       <div class='input'><a id="explore" href="#">Explore</a></div>
     </form>
   </div>
