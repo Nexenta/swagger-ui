@@ -120,11 +120,6 @@
 .swagger-section pre .xml .cdata {
   opacity: 0.5;
 }
-.swagger-section .swagger-ui-wrap .help_screen {
-  background-color: #f9f2e9;
-  border: 1px solid #f0e0ca;
-  padding: 10px;
-}
 .swagger-section .swagger-ui-wrap,
 .swagger-section .help_screen {
   line-height: 1;
@@ -1781,8 +1776,11 @@
   color: white;
   opacity: 0.8;
 }
+.swagger-section #header a#help_button {
+  display: block;
+}
 .swagger-section .swagger-ui-wrap {
-  font-family: 'Open Sans';
+  font-family: "Open Sans", sans-serif !important;
   /* Monotype font */
 
 }
@@ -1834,6 +1832,13 @@
 }
 .swagger-section .swagger-ui-wrap table tbody tr td {
   vertical-align: middle;
+}
+.swagger-section .swagger-ui-wrap .help_screen {
+  display: none;
+  font-family: "Open Sans", sans-serif;
+  background-color: #f9f2e9;
+  border: 1px solid #f0e0ca;
+  padding: 10px;
 }
 /**
  * json-view - jQuery collapsible JSON plugin

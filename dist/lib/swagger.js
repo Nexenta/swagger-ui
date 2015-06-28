@@ -1007,8 +1007,6 @@
     for (var i = 0; i < params.length; i++) {
       var param = params[i];
       if(param.paramType === 'query') {
-        if (queryParams !== '')
-          queryParams += '&';    
         if (Array.isArray(param)) {
           var j;   
           var output = '';   
@@ -1016,11 +1014,17 @@
             if(j > 0)    
               output += ',';   
             output += encodeURIComponent(param[j]);    
-          }    
+          }
+          if (queryParams !== '') {
+            queryParams += '&';
+          }
           queryParams += encodeURIComponent(param.name) + '=' + output;    
         }
         else {
           if (typeof args[param.name] !== 'undefined') {
+            if (queryParams !== '') {
+              queryParams += '&';
+            }
             queryParams += encodeURIComponent(param.name) + '=' + encodeURIComponent(args[param.name]);
           } else {
             if (param.required)

@@ -5,7 +5,8 @@ class MainView extends Backbone.View
   }
 
   events: {
-    'keyup #filter-input': 'filterMethods'
+    'keyup #filter-input' : 'filterMethods'
+    'click #close-help'   : 'closeHelp'
   }
 
   filterMethods: ->
@@ -91,6 +92,10 @@ class MainView extends Backbone.View
       swaggerOptions: @options.swaggerOptions
     })
     $('#resources').append resourceView.render().el
+
+  closeHelp: ->
+    $('#help_button').show()
+    $('.help_screen').hide()
 
   clear: ->
     $(@el).html ''

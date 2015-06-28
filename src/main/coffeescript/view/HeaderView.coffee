@@ -5,6 +5,7 @@ class HeaderView extends Backbone.View
     'click #explore'                : 'showCustom'
     'keyup #input_baseUrl'          : 'showCustomOnKeyup'
     'keyup #input_apiKey'           : 'showCustomOnKeyup'
+    'click #help_button'            : 'showHelp'
   }
 
   initialize: ->
@@ -30,6 +31,10 @@ class HeaderView extends Backbone.View
       'update-swagger-ui'
       {url: $('#input_baseUrl').val(), apiKey: $('#input_apiKey').val()}
     )
+
+  showHelp: ->
+    $('#help_button').hide()
+    $('.help_screen').show()
 
   update: (url, apiKey, trigger = false) ->
     $('#input_baseUrl').val url

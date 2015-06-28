@@ -11,13 +11,12 @@
   {{/if}}
 </div>
 
-  {{#if help}}
-  <div class="help_screen">
-      <a href="#" class="close" onclick="javascript:document.getElementsByClassName('help_screen')[0].style.display='none';
-                                      document.getElementById('help_button').style.display='inline';">[close]</a>
+
+    <div class="help_screen">
+        <a href="#" class="close" id="close-help">[close]</a>
       <h1>How to use interactive documentation</h1>
-  <p>Below is the list of endpoint collections. Click on some collection to inspect available REST API methods.</p>
-  <ul id="helpresources">
+    <p>Below is the list of endpoint collections. Click on some collection to inspect available REST API methods.</p>
+    <ul id="helpresources">
       <li id="resource_help" class="resource active">
           <ul class="endpoints" id="help_endpoint_list" style>
               <li class="endpoint">
@@ -48,9 +47,9 @@
               </li>
           </ul>
       </li>
-  </ul>
+    </ul>
 
-  <p>Click on the certain method to display detailed information including description, supported arguments, input/output data models.</p>
+    <p>Click on the certain method to display detailed information including description, supported arguments, input/output data models.</p>
     <ul id="helpresources">
     <li id="resource_help" class="resource active">
       <ul class="endpoints" id="help_endpoint_list" style>
@@ -106,9 +105,7 @@
                     </tr></thead>
                     <tbody class="body-params">
                     <tr>
-                        <td><textarea class="body-textarea" name="body">{
-    "name": "Appliance"
-}</textarea></td>
+                        <td><textarea class="body-textarea" name="body">{"name": "Appliance"}</textarea></td>
                         <td><span class="model-signature"><div><div><ul class="signature-nav">
                             <li><a class="description-link selected">Model</a></li>
                             <li><a class="snippet-link">Model Schema</a></li>
@@ -158,9 +155,9 @@
         </li>
       </ul>
     </li>
-  </ul>
+    </ul>
 
-  <p>Fill at least all required parameters and press 'Try it out!'.</p>
+    <p>Fill at least all required parameters and press 'Try it out!'.</p>
       <ul id="helpresources">
           <li id="resource_helq" class="resource active">
               <ul class="endpoints" id="help_endpoint_lista" style>
@@ -189,8 +186,11 @@
               </ul>
           </li>
       </ul>
-  </div>
-  {{/if}}
+    </div>
+
+
+
+
 
 <div class='container' id='resources_container'>
   <ul id='resources'></ul>

@@ -27,10 +27,14 @@
             color: white;
             opacity: 0.8;
         }
+
+        a#help_button {
+            display: block;
+        }        
     }
 
     .swagger-ui-wrap {
-        font-family: 'Open Sans';
+        font-family: "Open Sans", sans-serif !important;
 
         b, h1, strong, .model-signature, ul#resources,
         form.formtastic fieldset.inputs ol li.text textarea,
@@ -80,6 +84,14 @@
 
         table tbody tr td {
             vertical-align: middle;
+        }
+
+        .help_screen {
+            display: none;
+            font-family: "Open Sans", sans-serif;
+            background-color: #f9f2e9;
+            border: 1px solid #f0e0ca;
+            padding: 10px;
         }
     }
 }
