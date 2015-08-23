@@ -2557,6 +2557,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
           return _this.showCompleteStatus(_this.wrap(data), _this);
         }
       };
+      if (window.authorizations) {
+        window.authorizations.apply(obj);
+      }
       return jQuery.ajax(obj);
     };
 

@@ -541,4 +541,6 @@ class OperationView extends Backbone.View
         @showResponse(data, @)
       complete: (data) =>
         @showCompleteStatus(@wrap(data), @)
+    if window.authorizations
+      window.authorizations.apply obj
     jQuery.ajax(obj)
