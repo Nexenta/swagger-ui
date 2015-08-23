@@ -619,7 +619,10 @@
 
   var SwaggerModelProperty = function (name, obj, model) {
     this.name = name;
-    this.dataType = obj.type || obj.dataType || obj['$ref'];
+    if (!obj.type && obj.oneOf) {
+      obj.oneOfType = obj.oneOf[0].type;
+    }
+    this.dataType = obj.type || obj.dataType || obj['$ref'] || obj.oneOfType;
     this.isCollection = this.dataType && (this.dataType.toLowerCase() === 'array' || this.dataType.toLowerCase() === 'list' || this.dataType.toLowerCase() === 'set');
     this.descr = obj.description;
     this.required = obj.required;
@@ -970,32 +973,20 @@
     return this.path.replace('{format}', 'xml');
   };
 
-  SwaggerOperation.prototype.encodePathParam = function (pathParam) {
-    var encParts, part, parts, _i, _len;
-    pathParam = pathParam.toString();
-    if (pathParam.indexOf('/') === -1) {
-      return encodeURIComponent(pathParam);
-    } else {
-      parts = pathParam.split('/');
-      encParts = [];
-      for (_i = 0, _len = parts.length; _i < _len; _i++) {
-        part = parts[_i];
-        encParts.push(encodeURIComponent(part));
-      }
-      return encParts.join('/');
-    }
-  };
-
   SwaggerOperation.prototype.urlify = function (args) {
     var url = this.resource.basePath + this.pathJson();
     var params = this.parameters;
     for (var i = 0; i < params.length; i++) {
       var param = params[i];
       if (param.paramType === 'path') {
-        if (typeof args[param.name] !== 'undefined') {
+        var val = args[param.name];
+        if (typeof val !== 'undefined') {
           // apply path params and remove from args
           var reg = new RegExp('\\{\\s*?' + param.name + '.*?\\}(?=\\s*?(\\/?|$))', 'gi');
-          url = url.replace(reg, this.encodePathParam(args[param.name]));
+          if (!param.unencoded) {
+              val = encodeURIComponent(val.toString());
+          }
+          url = url.replace(reg, val);
           delete args[param.name];
         }
         else
