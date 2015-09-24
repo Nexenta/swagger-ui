@@ -634,6 +634,9 @@
       if (obj.items.$ref != null) {
         this.refDataType = obj.items.$ref;
       }
+      if (obj.items.enum != null) {
+        this.values = obj.items.enum;
+      }
     }
     this.dataTypeWithRef = this.refDataType != null ? (this.dataType + '[' + this.refDataType + ']') : this.dataType;
     if (obj.allowableValues != null) {
