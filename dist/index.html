@@ -59,23 +59,23 @@
         sorter : "alpha"
       });
 
-      function addApiKeyAuthorization() {
-        var key = $('#input_apiKey')[0].value;
-        log("key: " + key);
-        if(key && key.trim() != "") {
-            log("added key " + key);
-            window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", key, "query"));
-        }
+      function logOut() {
+        $('#auth-form').show();
+        $('a#logged_user').hide();
       }
 
-      function log_in() {
+      $('#logged_user').click(logOut);
+      $('#auth-form').submit(function(e) {
+        e.preventDefault();
+
         var obj = {
-          username: $('#username')[0].value,
-          password: $('#password')[0].value
+          username: $('#username').val().trim(),
+          password: $('#password').val().trim()
         };
 
-        if (!obj.username.trim() || !obj.password.trim())
+        if (!obj.username || !obj.password) {
           return;
+        }
 
         $.ajax({
           type: "POST",
@@ -86,11 +86,12 @@
             if (data.token) {
               window.authorizations.add("Authorization",
                 new ApiKeyAuthorization("Authorization", 'Bearer ' + data.token, "header"));
-                $('#username')[0].style.display = 'none';
-                $('#password')[0].style.display = 'none';
-                $('#auth_button')[0].style.display = 'none';
-                $('a#logged_user').text('Logged in as \'' + obj.username + '\'');
-                $('#logged_user')[0].style.display = 'inline-block';;
+                $('#auth-form').hide();
+                // $('#username')[0].style.display = 'none';
+                // $('#password')[0].style.display = 'none';
+                // $('#auth_button')[0].style.display = 'none';
+                $('a#logged_user').text('Logged in as "' + obj.username + '"');
+                $('a#logged_user').show();
             }
           },
           error: function(xhr, err) {
@@ -101,29 +102,8 @@
             else
               alert(err);
           }
-        });
-      }
-
-      function log_out() {
-        $('#username')[0].style.display = 'inline-block';
-        $('#password')[0].style.display = 'inline-block';
-        $('#auth_button')[0].style.display = 'inline-block';
-        $('#logged_user')[0].style.display = 'none';
-      }
-
-      $('#auth_button').click(log_in);
-      $('#logged_user').click(log_out);
-
-      $('#input_apiKey').change(function() {
-        addApiKeyAuthorization();
+        });        
       });
-
-      // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
-      /*
-        var apiKey = "myApiKeyXXXX123456789";
-        $('#input_apiKey').val(apiKey);
-        addApiKeyAuthorization();
-      */
 
       window.swaggerUi.load();
   });
@@ -139,9 +119,11 @@
             <a id="logo" href="/docs">NexentaStor REST API</a>
         </td>
         <td>
-            <input id="username" placeholder="user name" type="text" name="user"/>
-            <input id="password" placeholder="password" type="password" name="password"/>
-            <a href="#" id="auth_button" style="display: inline-block">Login</a>
+            <form id="auth-form">
+                <input id="username" placeholder="User name" type="text"/>
+                <input id="password" placeholder="Password" type="password"/>
+                <button type="submit">Login</button>
+            </form>
             <a href="#" id="logged_user"></a>
         </td>
         <td>
