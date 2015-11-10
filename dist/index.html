@@ -85,11 +85,9 @@
           success: function(data) {
             if (data.token) {
               window.authorizations.add("Authorization",
-                new ApiKeyAuthorization("Authorization", 'Bearer ' + data.token, "header"));
+                new ApiKeyAuthorization("Authorization", 'Bearer ' +
+                  data.token, "header"));
                 $('#auth-form').hide();
-                // $('#username')[0].style.display = 'none';
-                // $('#password')[0].style.display = 'none';
-                // $('#auth_button')[0].style.display = 'none';
                 $('a#logged_user').text('Logged in as "' + obj.username + '"');
                 $('a#logged_user').show();
             }
@@ -102,7 +100,7 @@
             else
               alert(err);
           }
-        });        
+        });
       });
 
       window.swaggerUi.load();
