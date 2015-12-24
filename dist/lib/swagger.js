@@ -545,6 +545,14 @@
     this.name = obj.id != null ? obj.id : modelName;
     this.properties = [];
     var propertyName;
+    if (obj.patternProperties) {
+      for (var patternProp in obj.patternProperties) {
+        if (!obj.hasOwnProperty('properties')) {
+          obj.properties = {};
+        }
+        obj.properties[patternProp] = obj.patternProperties[patternProp];
+      }
+    }
     for (propertyName in obj.properties) {
       if (obj.required != null) {
         var value;
@@ -621,6 +629,9 @@
     this.name = name;
     if (!obj.type && obj.oneOf) {
       obj.oneOfType = obj.oneOf[0].type;
+    }
+    if (Array.isArray(obj.type)) {
+      obj.type = obj.type[0];
     }
     this.dataType = obj.type || obj.dataType || obj['$ref'] || obj.oneOfType;
     this.isCollection = this.dataType && (this.dataType.toLowerCase() === 'array' || this.dataType.toLowerCase() === 'list' || this.dataType.toLowerCase() === 'set');
