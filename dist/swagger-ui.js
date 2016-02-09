@@ -1982,7 +1982,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     OperationView.prototype.render = function() {
-      var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, o, param, ref, responseContentTypeView, responseSignatureView, schema, schemaObj, signatureModel, statusCode, type, v, value, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref10, _ref11, _ref5, _ref6, _ref7, _ref8, _ref9;
+      var a, auth, auths, code, contentTypeModel, isMethodSubmissionSupported, k, key, o, param, ref, resp, responseContentTypeView, responseSignatureView, schema, schemaObj, signatureModel, statusCode, type, v, value, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref10, _ref11, _ref5, _ref6, _ref7, _ref8, _ref9;
       isMethodSubmissionSupported = true;
       if (!isMethodSubmissionSupported) {
         this.model.isReadOnly = true;
@@ -2118,6 +2118,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       for (_l = 0, _len3 = _ref10.length; _l < _len3; _l++) {
         param = _ref10[_l];
         this.addParameter(param, contentTypeModel.consumes);
+      }
+      if (this.model.method === 'post') {
+        resp = _.find(this.model.responseMessages, function(resp) {
+          return resp.code === 201;
+        });
+        if (resp) {
+          resp.code = '200 or ' + resp.code;
+          resp.message = 'OK or ' + resp.message;
+        }
       }
       _ref11 = this.model.responseMessages;
       for (_m = 0, _len4 = _ref11.length; _m < _len4; _m++) {

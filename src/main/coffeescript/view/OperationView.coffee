@@ -191,6 +191,15 @@ class OperationView extends Backbone.View
     # Render each parameter
     @addParameter param, contentTypeModel.consumes for param in @model.parameters
 
+    # If method is post and provides 201 response code, then add 200 as a
+    # possible response
+    # @see DE2513
+    if @model.method is 'post'
+      resp = _.find @model.responseMessages, (resp) -> resp.code is 201
+      if resp
+        resp.code = '200 or ' + resp.code
+        resp.message = 'OK or ' + resp.message
+
     # Render each response code
     @addStatusCode statusCode for statusCode in @model.responseMessages
 
