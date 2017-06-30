@@ -444,6 +444,8 @@
   };
 
   SwaggerResource.prototype.addApiDeclaration = function (response) {
+    if (response.apiVersion != null)
+      this.apiVersion = response.apiVersion;
     if (response.produces != null)
       this.produces = response.produces;
     if (response.consumes != null)
@@ -1212,7 +1214,7 @@
 
     this.type = this.type.toUpperCase();
 
-    // set request, response content type headers
+    // set version, request, response content type headers
     var headers = this.setHeaders(params, opts, this.operation);
     var body = params.body;
 
@@ -1316,6 +1318,7 @@
     // default type
     var accepts = opts.responseContentType || 'application/json';
     var consumes = opts.requestContentType || 'application/json';
+    var apiVersion = opts.apiVersion || '*';
 
     var allDefinedParams = operation.parameters;
     var definedFormParams = [];
@@ -1378,6 +1381,7 @@
       headers['Content-Type'] = consumes;
     if (accepts)
       headers['Accept'] = accepts;
+    headers['Accept-Version'] = apiVersion;
     return headers;
   }
 
