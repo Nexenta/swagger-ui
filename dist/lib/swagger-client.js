@@ -332,7 +332,8 @@ SwaggerClient.prototype.build = function() {
     url: this.url,
     method: "get",
     headers: {
-      accept: "application/json, */*"
+      accept: "application/json, */*",
+      "accept-version": "*"
     },
     on: {
       error: function(response) {
@@ -863,6 +864,8 @@ Operation.prototype.execute = function(arg1, arg2, arg3, arg4, parent) {
         args.body = args[param.name];
     }
   }
+  // TODO: implement support for multiple versions
+  headers['Accept-Version'] = "*";
   // handle form params
   if(headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     var encoded = "";

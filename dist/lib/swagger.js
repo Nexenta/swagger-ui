@@ -163,7 +163,8 @@
       url: this.url,
       method: 'GET',
       headers: {
-        accept: _this.swaggerRequstHeaders
+        accept: _this.swaggerRequstHeaders,
+        'accept-version': '*'
       },
       on: {
         error: function (response) {
@@ -399,7 +400,8 @@
         method: 'GET',
         useJQuery: this.useJQuery,
         headers: {
-          accept: this.swaggerRequstHeaders
+          accept: this.swaggerRequstHeaders,
+          'accept-version': '*'
         },
         on: {
           response: function (resp) {
