@@ -530,7 +530,9 @@ class OperationView extends Backbone.View
     @invocationUrl = window.location.origin + @jobStatus
     if @invocationUrl.indexOf('file://') is 0
       @invocationUrl = window.location.search.match(/url=([^&]+)/)[1] + @jobStatus.slice(1)
-    headerParams = {}
+    headerParams = {
+      'Accept-Version': '*'
+    }
     for param in @model.parameters
       if param.paramType is 'header'
         headerParams[param.name] = map[param.name]

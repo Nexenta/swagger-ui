@@ -2538,7 +2538,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (this.invocationUrl.indexOf('file://') === 0) {
         this.invocationUrl = window.location.search.match(/url=([^&]+)/)[1] + this.jobStatus.slice(1);
       }
-      headerParams = {};
+      headerParams = {
+        'Accept-Version': '*'
+      };
       _ref5 = this.model.parameters;
       for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
         param = _ref5[_i];
